@@ -16,8 +16,12 @@ def print_header
   puts "-------------"
 end
 def print(students)
-  students.each_with_index do |student, i|
-    puts "#{i + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+  number_of_students = 0
+  students.each do |student|
+    if student[:name][0] == "s"
+      number_of_students += 1
+      puts "#{number_of_students}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
   end
 end
 def print_footer(names)
