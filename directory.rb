@@ -18,7 +18,7 @@ end
 def print(students)
   number_of_students = 0
   students.each do |student|
-    if student[:name][0] == "s"
+    if student[:name].length < 12
       number_of_students += 1
       puts "#{number_of_students}. #{student[:name]} (#{student[:cohort]} cohort)"
     end
