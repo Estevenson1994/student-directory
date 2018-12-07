@@ -1,11 +1,18 @@
 def input_students
-  puts "Please enter the names of the students"
-  puts "To finish, just hit return twice"
+  puts "Please enter the name of the student"
+  puts "If there are no more students, hit return twice"
   students = []
   name = gets.chomp
   while !name.empty? do
-    students << {name: name, cohort: :november}
+    puts "Which cohort is this student part of?"
+    cohort = gets.chomp
+    puts "What is their country of birth?"
+    birth_country = gets.chomp
+    puts "What is their favourite past time?"
+    hobby = gets.chomp
+    students << {name: name, cohort: cohort, birth_country: birth_country, hobby: hobby}
     puts "Now we have #{students.count} students"
+    puts "Please enter name of student or hit return if you are done"
     name = gets.chomp
   end
   students
@@ -16,10 +23,11 @@ def print_header
   puts "-------------"
 end
 def print(students)
-  number_of_students = 0
-  while number_of_students < students.length do
-    puts "#{number_of_students + 1}. #{students[number_of_students][:name]} (#{students[number_of_students][:cohort]} cohort)"
-    number_of_students += 1    
+  student_number = 0
+  while student_number < students.length do
+    puts "#{student_number + 1}. #{students[student_number][:name]} (#{students[student_number][:cohort]} cohort)"
+    puts "#{students[student_number][:name]} was born in #{students[student_number][:birth_country]} and enjoys #{students[student_number][:hobby]} in their spare time"
+    student_number += 1    
   end
 end
 def print_footer(names)
