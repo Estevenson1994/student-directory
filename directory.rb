@@ -11,7 +11,7 @@ def input_students
     if cohort.empty?
       cohort = default_value
     else
-      while cohorts.include?(cohort) == false do
+      while !cohorts.include?(cohort) do
         puts "That isn't an available cohort, please try again"
         cohort = gets.chomp.capitalize.to_sym
       end
@@ -32,14 +32,26 @@ def print_header
   puts "The students of Villains Academy".center(50)
   puts "-------------".center(50)
 end
+
 def print(students)
-  student_number = 0
-  while student_number < students.length do
-    puts ""
-    puts "#{student_number + 1}. #{students[student_number][:name]} (#{students[student_number][:cohort]} cohort)".center(50)
-    puts "#{students[student_number][:name]} was born in #{students[student_number][:birth_country]} and enjoys #{students[student_number][:hobby]} in their spare time"
-    puts ""
-    student_number += 1    
+  cohorts = []
+  students.each do |student|
+    if !cohorts.include? student[:cohort]
+      cohorts.push(student[:cohort])
+    end
+  end
+  cohorts.each do |month|
+    puts "Students in the #{month} cohort are as follows:".center(50)
+    student_count = 0
+    students.each_with_index do |student, index|
+      if student[:cohort] == month
+       student_count += 1
+       puts ""
+       puts "#{student_count}. #{student[:name]} (#{student[:cohort]} cohort)".center(50)
+       puts "#{student[:name]} was born in #{student[:birth_country]} and enjoys #{student[:hobby]} in their spare time"
+       puts ""
+      end  
+    end
   end
 end
 def print_footer(names)
