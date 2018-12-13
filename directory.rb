@@ -4,7 +4,7 @@ def input_students
   students = []
   default_value = :default
   cohorts = [:November, :January, :March, :May, :July, :September]
-  name = gets.chomp.capitalize
+  name = gets.delete "\n".capitalize
   while !name.empty? do
     puts "Which cohort is this student part of? If you're not sure, just hit enter"
     cohort = gets.chomp.capitalize.to_sym
@@ -17,13 +17,13 @@ def input_students
       end
     end
     puts "What is their country of birth?"
-    birth_country = gets.chomp.capitalize
+    birth_country = gets.delete "\n".capitalize
     puts "What is their favourite past time?"
-    hobby = gets.chomp
+    hobby = gets.delete "\n"
     students << {name: name, cohort: cohort, birth_country: birth_country, hobby: hobby}
     puts "Now we have #{students.count} students"
     puts "Please enter name of student or hit return if there are no more"
-    name = gets.chomp.capitalize
+    name = gets.delete "\n".capitalize
   end
   students
 end
