@@ -1,3 +1,5 @@
+require 'csv'
+
 @students = []
 
 def print_menu
@@ -142,11 +144,9 @@ def show_students
 end
  
 def save_students
-  File.open(filename, "w") do |file|
+  CSV.open(filename, "wb") do |csv|
     @students.each do |student|
-      student_data = [student[:name], student[:cohort], student[:birth_country], student[:hobby]]
-      csv_line = student_data.join(",")
-      file.puts csv_line
+      csv << [student[:name], student[:cohort], student[:birth_country], student[:hobby]]
     end
   end
 end
