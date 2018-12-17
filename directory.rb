@@ -25,6 +25,7 @@ def process(selection)
       save_students
     when "4"
       load_students
+      puts "There are now #{@students.count} students loaded"
     when "9"
        exit
     else
@@ -39,7 +40,7 @@ def load_students(filename = "students.csv")
     name, cohort = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym}
   end
-  file.close
+  file.close  
 end
 
 def input_students
@@ -133,7 +134,7 @@ def save_students
     csv_line = student_data.join(",")
     file.puts csv_line
   end
-  puts "You have saved #{@students.count} student(s) to your selected file"
+  puts "There are now #{@students.count} student(s) saved in your selected file"
   file.close
 end
 
