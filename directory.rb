@@ -69,6 +69,7 @@ def get_cohort
       cohort = gets.chomp.capitalize.to_sym
     end
   end
+  cohort
 end
 
 def get_hobby
@@ -132,6 +133,7 @@ def save_students
     csv_line = student_data.join(",")
     file.puts csv_line
   end
+  puts "You have saved #{@students.count} student(s) to your selected file"
   file.close
 end
 
