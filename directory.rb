@@ -51,11 +51,12 @@ def get_student_count
 end
 
 def load_students(filename = "students.csv")
-  File.open(filename, "r") do |file|
-    file.readlines.each do |line|
-      name, cohort, birth_country, hobby = line.chomp.split(',')
-      @students << {name: name, cohort: cohort.to_sym, birth_country: birth_country, hobby: hobby}
-    end
+  CSV.foreach(filename, headers:true) do |row|
+      @students << {name: row['Name'],
+                    cohort: row['Cohort'].to_sym,
+                    birth_country: row['Nationality'],
+                    hobby: row['Hobby']
+                   }
   end  
 end
 
@@ -144,9 +145,15 @@ def show_students
 end
  
 def save_students
-  CSV.open(filename, "wb") do |csv|
+  header = ["Name", "Cohort", "Nationality", "Hobby"]
+  CSV.open(filename, "a") do |csv|
     @students.each do |student|
-      csv << [student[:name], student[:cohort], student[:birth_country], student[:hobby]]
+      row = CSV::Row.new(header, [])
+      row["Name"] = student[:name]
+      row["Cohort"] =  student[:cohort]
+      row["Nationality"] = student[:birth_country]
+      row["Hobby"] =  student[:hobby]
+      csv << row
     end
   end
 end
