@@ -49,12 +49,12 @@ def get_student_count
 end
 
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort, birth_country, hobby = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym, birth_country: birth_country, hobby: hobby}
-  end
-  file.close  
+  File.open(filename, "r") do |file|
+    file.readlines.each do |line|
+      name, cohort, birth_country, hobby = line.chomp.split(',')
+      @students << {name: name, cohort: cohort.to_sym, birth_country: birth_country, hobby: hobby}
+    end
+  end  
 end
 
 def input_students
@@ -142,13 +142,13 @@ def show_students
 end
  
 def save_students
-  file = File.open(filename, "w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort], student[:birth_country], student[:hobby]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  File.open(filename, "w") do |file|
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort], student[:birth_country], student[:hobby]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
+    end
   end
-  file.close
 end
 
 def try_load_students
