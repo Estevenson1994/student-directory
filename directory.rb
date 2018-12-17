@@ -3,8 +3,8 @@
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to file"
+  puts "4. Load the list from a file"
   puts "9. Exit"
 end
 
@@ -23,9 +23,10 @@ def process(selection)
       show_students
     when "3"
       save_students
+      get_student_count
     when "4"
-      load_students
-      puts "There are now #{@students.count} students loaded"
+      load_students(filename)
+      get_student_count
     when "9"
        exit
     else
@@ -33,6 +34,19 @@ def process(selection)
   end
 end
 
+def filename
+  puts "Please enter the name of the file"
+  filename = gets.chomp
+  while !File.exists?(filename)
+    puts "Sorry '#{filename}' doesn't exit, please try again"
+    filename = gets.chomp
+  end
+  filename
+end
+
+def get_student_count
+  puts "There are now #{@students.count} students"
+end
 
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
@@ -128,13 +142,12 @@ def show_students
 end
  
 def save_students
-  file = File.open("students.csv", "w")
+  file = File.open(filename, "w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort], student[:birth_country], student[:hobby]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
-  puts "There are now #{@students.count} student(s) saved in your selected file"
   file.close
 end
 
