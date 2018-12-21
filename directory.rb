@@ -41,7 +41,7 @@ def input_students
   puts "If there are no more students, hit return"
   name = STDIN.gets.chomp.capitalize
   while !name.empty? do
-    insert_students_into_array(name, get_cohort, get_birth_country, get_hobby)
+    insert_students_into_array(name, get_students_cohort, get_birth_country, get_hobby)
     puts "Now we have #{@students.count} students"
     puts "Please enter name of student or hit return if there are no more"
     name = STDIN.gets.chomp.capitalize
@@ -63,7 +63,7 @@ def print_students_by_cohort(cohorts)
   cohorts.each do |month|
     puts "Students in the #{month} cohort are as follows:".center(50)
     student_count = 0
-    @students.each_with_index do |student, index|
+    @students.each do |student|
       if student[:cohort] == month
        student_count += 1
        puts ""
@@ -127,7 +127,7 @@ def insert_students_into_array(name, cohort, birth_country, hobby)
   @students << {name: name, cohort: cohort, birth_country: birth_country, hobby: hobby}
 end
 
-def get_cohort
+def get_students_cohort
   cohorts = [:November, :January, :March, :May, :July, :September]
   puts "Which cohort is this student part of? If you're not sure, hit return"
   cohort = STDIN.gets.chomp.capitalize.to_sym
