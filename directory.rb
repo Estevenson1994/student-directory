@@ -27,7 +27,7 @@ def process(selection)
       save_students
       get_student_count
     when "4"
-      load_students(filename)
+      load_students(get_filename)
       get_student_count
     when "9"
        exit
@@ -36,68 +36,22 @@ def process(selection)
   end
 end
 
-def filename
-  puts "Please enter the name of the file"
-  filename = gets.chomp
-  while !File.exists?(filename)
-    puts "Sorry '#{filename}' doesn't exit, please try again"
-    filename = gets.chomp
-  end
-  filename
-end
-
-def get_student_count
-  puts "There are now #{@students.count} students"
-end
-
-def load_students(filename = "students.csv")
-  CSV.foreach(filename, headers:true) do |row|
-      @students << {name: row['Name'],
-                    cohort: row['Cohort'].to_sym,
-                    birth_country: row['Nationality'],
-                    hobby: row['Hobby']
-                   }
-  end  
-end
-
 def input_students
   puts "Please enter the name of the student"
   puts "If there are no more students, hit return"
   name = STDIN.gets.chomp.capitalize
   while !name.empty? do
-    cohort = get_cohort
-    birth_country = get_birth_country
-    hobby = get_hobby
-    @students << {name: name, cohort: cohort, birth_country: birth_country, hobby: hobby}
+    insert_students_into_array(name, get_cohort, get_birth_country, get_hobby)
     puts "Now we have #{@students.count} students"
     puts "Please enter name of student or hit return if there are no more"
     name = STDIN.gets.chomp.capitalize
   end
 end
 
-def get_cohort
-  cohorts = [:November, :January, :March, :May, :July, :September]
-  puts "Which cohort is this student part of? If you're not sure, hit return"
-  cohort = STDIN.gets.chomp.capitalize.to_sym
-  if cohort.empty?
-    cohort = :November
-  else
-    while !cohorts.include?(cohort) do
-      puts "That isn't an available cohort, please try again"
-      cohort = gets.chomp.capitalize.to_sym
-    end
-  end
-  cohort
-end
-
-def get_hobby
-  puts "What is their hobby?"
-  hobby = STDIN.gets.chomp
-end
-
-def get_birth_country
-  puts "Where are they from?"
-  birth_country = STDIN.gets.chomp
+def show_students
+  print_header
+  print_student_list
+  print_footer
 end
 
 def print_header
@@ -133,29 +87,65 @@ def print_footer
     puts "Overall, we have #{@students.count} great students".center(50)
   else
     puts "Overall, we have #{@students.count} great student".center(50)
-end
+  end
 end
 
-
- 
-def show_students
-  print_header
-  print_student_list
-  print_footer
-end
- 
 def save_students
-  header = ["Name", "Cohort", "Nationality", "Hobby"]
-  CSV.open(filename, "a") do |csv|
+  CSV.open(get_filename, "a") do |csv|
     @students.each do |student|
-      row = CSV::Row.new(header, [])
-      row["Name"] = student[:name]
-      row["Cohort"] =  student[:cohort]
-      row["Nationality"] = student[:birth_country]
-      row["Hobby"] =  student[:hobby]
-      csv << row
+      csv << [student[:name], student[:cohort], student[:birth_country], student[:hobby]]
     end
   end
+end
+
+def get_filename
+  puts "Please enter the name of the file"
+  filename = gets.chomp
+  while !File.exists?(filename)
+    puts "Sorry '#{filename}' doesn't exit, please try again"
+    filename = gets.chomp
+  end
+  filename
+end
+
+def get_student_count
+  puts "There are now #{@students.count} students"
+end
+
+def load_students(filename = "students.csv")
+  CSV.foreach(filename) do |row|
+    name, cohort, birth_country, hobby = row
+    insert_students_into_array(name, cohort, birth_country, hobby)
+  end  
+end
+
+def insert_students_into_array(name, cohort, birth_country, hobby)
+  @students << {name: name, cohort: cohort, birth_country: birth_country, hobby: hobby}
+end
+
+def get_cohort
+  cohorts = [:November, :January, :March, :May, :July, :September]
+  puts "Which cohort is this student part of? If you're not sure, hit return"
+  cohort = STDIN.gets.chomp.capitalize.to_sym
+  if cohort.empty?
+    cohort = :November
+  else
+    while !cohorts.include?(cohort) do
+      puts "That isn't an available cohort, please try again"
+      cohort = gets.chomp.capitalize.to_sym
+    end
+  end
+  cohort
+end
+
+def get_hobby
+  puts "What is their hobby?"
+  hobby = STDIN.gets.chomp
+end
+
+def get_birth_country
+  puts "Where are they from?"
+  birth_country = STDIN.gets.chomp
 end
 
 def try_load_students
@@ -171,5 +161,6 @@ def try_load_students
     exit
   end
 end
+
 try_load_students
 interactive_menu
