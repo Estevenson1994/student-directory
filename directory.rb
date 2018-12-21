@@ -50,7 +50,7 @@ end
 
 def show_students
   print_header
-  print_student_list
+  print_students_by_cohort(available_cohorts)
   print_footer
 end
 
@@ -59,13 +59,7 @@ def print_header
   puts "-------------".center(50)
 end
 
-def print_student_list
-  cohorts = []
-  @students.each do |student|
-    if !cohorts.include? student[:cohort]
-      cohorts.push(student[:cohort])
-    end
-  end
+def print_students_by_cohort(cohorts)
   cohorts.each do |month|
     puts "Students in the #{month} cohort are as follows:".center(50)
     student_count = 0
@@ -79,6 +73,16 @@ def print_student_list
       end  
     end
   end
+end
+
+def available_cohorts
+  cohorts = []
+  @students.each do |student|
+    if !cohorts.include? student[:cohort]
+      cohorts.push(student[:cohort])
+    end
+  end
+  cohorts
 end
 
 def print_footer
